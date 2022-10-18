@@ -52,6 +52,7 @@ function App() {
     function addTasks(title: string) {
         let newTask: TaskType = {id: v1(), title: title, isDone: false,}
         setTask([newTask, ...tasks])
+        console.log(1)
     }
 
     return (
