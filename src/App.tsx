@@ -15,7 +15,7 @@ function App() {
     const title1 = "What to learn 1111"
     const title2 = "What to learn 2222"
 
-    let [tasks, setTask] = useState([
+    let [tasks, setTask] = useState<Array<TaskType>>([
         {id: v1(), title: "HTML&CSS", isDone: true,},
         {id: v1(), title: "JS", isDone: true},
         {id: v1(), title: "ReactJS", isDone: false},
@@ -25,6 +25,14 @@ function App() {
         {id: v1(), title: "Angular", isDone: true},
         {id: v1(), title: "LESS", isDone: false}
     ])
+
+    function changeTaskStatus(id: string, change: boolean) {
+        let task = tasks.find(el => el.id == id)
+        if(task){
+            task.isDone = !task.isDone
+            setTask([...tasks])
+        }
+    }
 
     function DeleteTask(id: string) {
         setTask(tasks = tasks.filter(el => id != el.id))
@@ -57,8 +65,16 @@ function App() {
 
     return (
         <div className="App">
-            <Todolist addTasks={addTasks} ChangeFilter={ChangeFilter} DeleteTask={DeleteTask} title={title1}
-                      tasks={tasks}/>
+            <Todolist addTasks={addTasks}
+                      ChangeFilter={ChangeFilter}
+                      DeleteTask={DeleteTask}
+                      title={title1}
+                      changeTaskStatus={changeTaskStatus}
+                      tasks={tasks}
+                      filter={filter}
+            />
+
+
         </div>
     );
 }
