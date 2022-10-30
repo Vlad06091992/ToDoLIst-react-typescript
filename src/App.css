@@ -22,3 +22,8 @@
 .is-done {
   opacity: 0.5;
 }
+
+h3,input,button{
+  display: inline-block;
+}
+
