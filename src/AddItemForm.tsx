@@ -1,9 +1,11 @@
 import React, {KeyboardEvent, useState} from "react";
 import './App.css';
+import {IconButton, TextField} from "@material-ui/core";
+import PlusOneIcon from '@material-ui/icons/PlusOne';
 
 
 type AddItemFormPropsType = {
-    title:string
+    placeholder:string
     addItem:(title: string)=>void
 
 }
@@ -40,16 +42,20 @@ export const AddItemForm = (props:AddItemFormPropsType) => {
         <div>
 
             <div className={"flex"}>
-                <input value={title}
-                       onChange={onChangeSetLocalItem}
-                       onKeyDown={onKeyDownEnterAddItem}
-                       className={error ? "error" : ""}
+                <TextField label={props.placeholder}
+                           value={title}
+                           onChange={onChangeSetLocalItem}
+                           onKeyDown={onKeyDownEnterAddItem}
+                           error={!!error}
+                           helperText={error? "Ttile is required" : ""}
                 />
-                <button onClick={onClickAddItem}>+</button>
 
+                <IconButton onClick={onClickAddItem} >
+                  <PlusOneIcon color={"primary"}/>
+                </IconButton>
 
             </div>
-            {error && <div className={error ? "error-message" : ""}>Title is required</div>}
+
 
 
 

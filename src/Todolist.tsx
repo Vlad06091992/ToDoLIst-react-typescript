@@ -1,11 +1,11 @@
 import React, {ChangeEvent, useState} from "react";
-import {TasksArrayType} from "./App";
 import {FilterType} from "./App";
-import {KeyboardEvent} from "react";
 import './App.css';
 import {AddItemForm} from "./AddItemForm";
-import {v1} from "uuid";
 import {EditableSpan} from "./EditableSpan";
+import {Button, Checkbox, IconButton, List, ListItem, Paper} from "@material-ui/core";
+import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 type TodolistProps = {
     removeTodolist: (todolistId: string) => void
@@ -42,6 +42,10 @@ export const Todolist = (props: TodolistProps) => {
         props.ChangeFilter("complete", props.todolistId)
     }
 
+    const removeTodoloist = () => {
+        props.removeTodolist(props.todolistId)
+    }
+
     const todolistElements = props.tasks.map((el: TaskType) => {
         const changeTaskStatus = (event: ChangeEvent<HTMLInputElement>) => {
             let newIsDoneValue = event.currentTarget.checked
@@ -50,47 +54,62 @@ export const Todolist = (props: TodolistProps) => {
         const changeTaskTitle = (title: string) => {
             props.changeTaskTitle(props.todolistId, el.id, title)
         }
-        const removeTask = () =>{
-            props.removeTask(props.todolistId,el.id)
+        const removeTask = () => {
+            props.removeTask(props.todolistId, el.id)
         }
         return (
-            <li key={el.id} className={el.isDone ? "is-done" : ""}>
-                <div className={"flex"}>
-                    <input type="checkbox" onChange={changeTaskStatus} checked={el.isDone}/>
-                    <EditableSpan
-                        title={el.title}
-                        changeTaskTitle={changeTaskTitle}/>
-                    <button onClick={() => {
-                        removeTask()
-                    }}>x
-                    </button>
-                </div>
-            </li>
 
-        )
+                <ListItem style={{padding: "0"}}
+                          key={el.id}
+                          className={el.isDone ? "is-done" : ""}>
+                    <div className={"flex"}>
+                        <Checkbox
+                            color={"primary"}
+                            checked={el.isDone}
+                            onChange={changeTaskStatus}
+                        />
+                        <EditableSpan
+                            title={el.title}
+                            changeTaskTitle={changeTaskTitle}/>
+                        <IconButton size={"small"} onClick={removeTask}>
+                            <DeleteIcon/>
+                        </IconButton>
+                    </div>
+                </ListItem>
+
+
+
+    )
     })
 
     return (
-        <div className="App">
+        <div>
+            <h3>
+                {props.title}
+                <IconButton onClick={removeTodoloist}>
+                    <DeleteForeverIcon/>
+                </IconButton>
+            </h3>
+            <AddItemForm
+                placeholder="Add task"
+                addItem={addTask}/>
+            {props.tasks.length > 0 ? <List>{todolistElements}</List> : <div>This list is empty</div>}
             <div>
-                <h3>
-                    {props.title}
-                    <button onClick={() => props.removeTodolist(props.todolistId)}>x</button>
-                </h3>
-                <AddItemForm title={props.title}
-                             addItem={addTask}/>
-
-                {props.tasks.length > 0 ? <ul>{todolistElements}</ul> : <div>This list is empty</div>}
-                <div>
-                    <button className={props.filter == 'all' ? "active-filter" : ""} onClick={onAllClickHandler}>All
-                    </button>
-                    <button className={props.filter == 'active' ? "active-filter" : ""}
-                            onClick={onActiveClickHandler}>Active
-                    </button>
-                    <button className={props.filter == 'complete' ? "active-filter" : ""}
-                            onClick={onCompletedClickHandler}>Completed
-                    </button>
-                </div>
+                <Button
+                    variant={"contained"}
+                    color={props.filter == 'all' ? "secondary" : "primary"}
+                    onClick={onAllClickHandler}>All
+                </Button>
+                <Button style={{margin: "10px"}}
+                        variant={"contained"}
+                        color={props.filter == 'active' ? "secondary" : "primary"}
+                        onClick={onActiveClickHandler}>Active
+                </Button>
+                <Button
+                    variant={"contained"}
+                    color={props.filter == 'complete' ? "secondary" : "primary"}
+                    onClick={onCompletedClickHandler}>Completed
+                </Button>
             </div>
         </div>
     )
