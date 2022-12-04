@@ -1,10 +1,14 @@
 .App {
   padding: 30px;
-  display: flex;
+}
+
+.header{
+display: flex;
+  justify-content: center;
 }
 
 .App > div {
-  margin-right: 50px;
+  /*margin-right: 50px;*/
 }
 
 .error{
@@ -21,9 +25,16 @@
 
 .is-done {
   opacity: 0.5;
+  color:red;
+  text-decoration: line-through;
 }
 
-h3,input,button{
+input,button{
   display: inline-block;
 }
 
+.flex{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
