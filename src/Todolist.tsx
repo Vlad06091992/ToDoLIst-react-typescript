@@ -17,6 +17,7 @@ type TodolistProps = {
     addTask: (task: string, taskId: string) => void
     changeTaskStatus: (todolistId: string, change: boolean, taskId: string) => void
     changeTaskTitle: (todolistId: string, taskId: string, title: string) => void
+    changeTodolistTitle: (title: string, todoListId: string) => void
     filter: FilterType
 }
 
@@ -30,6 +31,10 @@ export type TaskType = {
 export const Todolist = (props: TodolistProps) => {
     function addTask(title: string) {
         props.addTask(title, props.todolistId)
+    }
+
+    function changeTodolistTitle(title: string) {
+        props.changeTodolistTitle(title, props.todolistId)
     }
 
     const onAllClickHandler = () => {
@@ -59,37 +64,36 @@ export const Todolist = (props: TodolistProps) => {
         }
         return (
 
-                <ListItem style={{padding: "0"}}
-                          key={el.id}
-                          className={el.isDone ? "is-done" : ""}>
-                    <div className={"flex"}>
-                        <Checkbox
-                            color={"primary"}
-                            checked={el.isDone}
-                            onChange={changeTaskStatus}
-                        />
-                        <EditableSpan
-                            title={el.title}
-                            changeTaskTitle={changeTaskTitle}/>
-                        <IconButton size={"small"} onClick={removeTask}>
-                            <DeleteIcon/>
-                        </IconButton>
-                    </div>
-                </ListItem>
+            <ListItem style={{padding: "0"}}
+                      key={el.id}
+                      className={el.isDone ? "is-done" : ""}>
+                <div className={"flex"}>
+                    <Checkbox
+                        color={"primary"}
+                        checked={el.isDone}
+                        onChange={changeTaskStatus}
+                    />
+                    <EditableSpan
+                        title={el.title}
+                        changeTitle={changeTaskTitle}/>
+                    <IconButton size={"small"} onClick={removeTask}>
+                        <DeleteIcon/>
+                    </IconButton>
+                </div>
+            </ListItem>
 
 
-
-    )
+        )
     })
 
     return (
         <div>
-            <h3>
-                {props.title}
-                <IconButton onClick={removeTodoloist}>
-                    <DeleteForeverIcon/>
-                </IconButton>
-            </h3>
+<div className="flex">
+            <EditableSpan title={props.title} changeTitle={changeTodolistTitle}/>
+            <IconButton onClick={removeTodoloist}>
+                <DeleteForeverIcon/>
+            </IconButton>
+</div>
             <AddItemForm
                 placeholder="Add task"
                 addItem={addTask}/>

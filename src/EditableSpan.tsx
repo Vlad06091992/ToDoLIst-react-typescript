@@ -3,8 +3,7 @@ import React from "react";
 
 type EditableSpanPropsType = {
     title: string
-
-    changeTaskTitle: (title: string) => void
+    changeTitle: (title: string) => void
 }
 
 export const EditableSpan = (props: EditableSpanPropsType) => {
@@ -19,7 +18,7 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
 
     const onBlurEditableSpanHandler = (title: string) => {
         status && setStatus(false)
-        props.changeTaskTitle(title)
+        props.changeTitle(title)
     }
 
     const onKeyDownEnterAddItem = (event: KeyboardEvent<HTMLInputElement>) => {
