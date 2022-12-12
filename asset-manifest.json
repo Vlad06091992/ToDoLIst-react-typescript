@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/ToDoLIst/static/css/main.54877fef.chunk.css",
-    "main.js": "/ToDoLIst/static/js/main.fb99a20e.chunk.js",
-    "main.js.map": "/ToDoLIst/static/js/main.fb99a20e.chunk.js.map",
-    "runtime-main.js": "/ToDoLIst/static/js/runtime-main.7c9815e2.js",
-    "runtime-main.js.map": "/ToDoLIst/static/js/runtime-main.7c9815e2.js.map",
-    "static/js/2.85ee866e.chunk.js": "/ToDoLIst/static/js/2.85ee866e.chunk.js",
-    "static/js/2.85ee866e.chunk.js.map": "/ToDoLIst/static/js/2.85ee866e.chunk.js.map",
-    "index.html": "/ToDoLIst/index.html",
-    "precache-manifest.ce77485db30dbe0b203921044860f267.js": "/ToDoLIst/precache-manifest.ce77485db30dbe0b203921044860f267.js",
-    "service-worker.js": "/ToDoLIst/service-worker.js",
-    "static/css/main.54877fef.chunk.css.map": "/ToDoLIst/static/css/main.54877fef.chunk.css.map",
-    "static/js/2.85ee866e.chunk.js.LICENSE.txt": "/ToDoLIst/static/js/2.85ee866e.chunk.js.LICENSE.txt"
+    "main.css": "/ToDoLIst-react-typescript/static/css/main.54877fef.chunk.css",
+    "main.js": "/ToDoLIst-react-typescript/static/js/main.69379da9.chunk.js",
+    "main.js.map": "/ToDoLIst-react-typescript/static/js/main.69379da9.chunk.js.map",
+    "runtime-main.js": "/ToDoLIst-react-typescript/static/js/runtime-main.3af8cfbb.js",
+    "runtime-main.js.map": "/ToDoLIst-react-typescript/static/js/runtime-main.3af8cfbb.js.map",
+    "static/js/2.ca979a87.chunk.js": "/ToDoLIst-react-typescript/static/js/2.ca979a87.chunk.js",
+    "static/js/2.ca979a87.chunk.js.map": "/ToDoLIst-react-typescript/static/js/2.ca979a87.chunk.js.map",
+    "index.html": "/ToDoLIst-react-typescript/index.html",
+    "precache-manifest.f40e242ffd11f82bffae192b2ba4e9e4.js": "/ToDoLIst-react-typescript/precache-manifest.f40e242ffd11f82bffae192b2ba4e9e4.js",
+    "service-worker.js": "/ToDoLIst-react-typescript/service-worker.js",
+    "static/css/main.54877fef.chunk.css.map": "/ToDoLIst-react-typescript/static/css/main.54877fef.chunk.css.map",
+    "static/js/2.ca979a87.chunk.js.LICENSE.txt": "/ToDoLIst-react-typescript/static/js/2.ca979a87.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.7c9815e2.js",
-    "static/js/2.85ee866e.chunk.js",
+    "static/js/runtime-main.3af8cfbb.js",
+    "static/js/2.ca979a87.chunk.js",
     "static/css/main.54877fef.chunk.css",
-    "static/js/main.fb99a20e.chunk.js"
+    "static/js/main.69379da9.chunk.js"
   ]
 }
