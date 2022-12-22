@@ -11,11 +11,14 @@ import {Menu} from "@material-ui/icons";
 
 export type TasksArrayType = Array<TaskType>
 export type FilterType = "all" | "active" | "complete"
-type TodolistsType = {
+export type TodolistType = {
     id: string
     title: string
     filter: FilterType
 }
+
+export type TodolistsType = TodolistType[]
+
 type TaskObjType = {
     [key: string]: TasksArrayType
 }
@@ -24,7 +27,7 @@ function App() {
     const todolist1 = v1()
     const todolist2 = v1()
 
-    let [todolists, setTodolists] = useState<Array<TodolistsType>>([
+    let [todolists, setTodolists] = useState<TodolistsType>([
         {id: todolist1, title: "What to learn", filter: "all"},
         {id: todolist2, title: "What to buy", filter: "all"},
     ])
@@ -72,7 +75,7 @@ function App() {
 
     function addTodolist(title: string) {
         const newTodolistId = v1()
-        const newTodolist: TodolistsType = {id: newTodolistId, title: title, filter: "all"}
+        const newTodolist: TodolistType = {id: newTodolistId, title: title, filter: "all"}
         setTodolists([...todolists, newTodolist])
         setTask({...tasks, [newTodolistId]: []})
 
@@ -82,8 +85,8 @@ function App() {
         delete tasks[todolistId]
         setTask({...tasks})
     }
-    function ChangeTodolistFilter(value: FilterType, taskId: string) {
-        let todolist = todolists.find(el => el.id == taskId)
+    function ChangeTodolistFilter(value: FilterType, todolistId: string) {
+        let todolist = todolists.find(el => el.id == todolistId)
         if (todolist) {
             todolist.filter = value
         }
@@ -93,7 +96,7 @@ function App() {
         setTodolists(todolists.map(el => el.id === todolistId ? {...el, title:title}: el))
     }
 
-    const todolistComponents = todolists.map((el: TodolistsType) => {
+    const todolistComponents = todolists.map((el: TodolistType) => {
         let AllCurrentTask = tasks[el.id]    //массив тасок
         let tasksForTodoLists = AllCurrentTask   //массив отфильтрованных тасок
 
