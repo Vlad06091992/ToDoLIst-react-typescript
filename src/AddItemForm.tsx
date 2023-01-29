@@ -30,9 +30,9 @@ export const AddItemForm = (props:AddItemFormPropsType) => {
     const onKeyDownEnterAddItem = (event: KeyboardEvent<HTMLInputElement>) => {
         setError(null)
         if (event.key === "Enter") {
-            props.addItem(title.trim())
-            setTitle('')
-
+            // props.addItem(title.trim())
+            // setTitle('')
+onClickAddItem()
         }
     }
 

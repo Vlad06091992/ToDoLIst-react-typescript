@@ -97,7 +97,8 @@ export const TodolistWithRedux = ({todolist}:TodolistWithReduxProps) => {
 </div>
             <AddItemForm
                 placeholder="Add task"
-                addItem={addTask}/>
+                addItem={addTask}
+            />
             {task.length > 0 ? <List>{todolistElements}</List> : <div>This list is empty</div>}
             <div>
                 <Button
