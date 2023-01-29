@@ -6,19 +6,14 @@ import {EditableSpan} from "./EditableSpan";
 import {Button, Checkbox, IconButton, List, ListItem, Paper} from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import {useDispatch, useSelector} from "react-redux";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./reducers/task-reducer";
+import {ChangeTodolistFilterAC, ChangeTodolistTitleAC, RemoveTodolistAC} from "./reducers/todolist-reducer";
+import {TasksArrayType, TasksStateType, TodolistType} from "./AppWithRedux";
+import {AppRootStateType} from "./store";
 
-type TodolistProps = {
-    removeTodolist: (todolistId: string) => void
-    todolistId: string
-    title: string,
-    tasks: Array<TaskType>,
-    removeTask: (todolistId: string, taskId: string) => void
-    ChangeFilter: (value: FilterType, taskId: string) => void
-    addTask: (task: string, taskId: string) => void
-    changeTaskStatus: (todolistId: string, change: boolean, taskId: string) => void
-    changeTaskTitle: (todolistId: string, taskId: string, title: string) => void
-    changeTodolistTitle: (title: string, todoListId: string) => void
-    filter: FilterType
+type TodolistWithReduxProps = {
+    todolist:TodolistType
 }
 
 export type TaskType = {
@@ -28,39 +23,45 @@ export type TaskType = {
 }
 
 
-export const Todolist = (props: TodolistProps) => {
+export const TodolistWithRedux = ({todolist}:TodolistWithReduxProps) => {
+
+    let{title,id,filter} = todolist
+    let task = useSelector<AppRootStateType, TasksArrayType>(state => state.tasks[id])
+
+    if (filter == "active") task = task.filter(el => !el.isDone)
+    if (filter == "complete") task = task.filter(el => el.isDone)
+
+    let dispatch = useDispatch()
+
     function addTask(title: string) {
-        props.addTask(title, props.todolistId)
+        dispatch(addTaskAC(title, id))
     }
 
     function changeTodolistTitle(title: string) {
-        props.changeTodolistTitle(title, props.todolistId)
+        dispatch(ChangeTodolistTitleAC(title, id))
     }
 
-    const onAllClickHandler = () => {
-        props.ChangeFilter("all", props.todolistId)
-    }
-    const onActiveClickHandler = () => {
-        props.ChangeFilter("active", props.todolistId)
-    }
-    const onCompletedClickHandler = () => {
-        props.ChangeFilter("complete", props.todolistId)
+    const onClickHandler = (filter:FilterType) => {
+        dispatch(ChangeTodolistFilterAC(id, filter))
     }
 
     const removeTodoloist = () => {
-        props.removeTodolist(props.todolistId)
+        dispatch(RemoveTodolistAC(id))
     }
 
-    const todolistElements = props.tasks.map((el: TaskType) => {
+    const todolistElements = task.map((el: TaskType) => {
+
+        console.log(task.length)
+
         const changeTaskStatus = (event: ChangeEvent<HTMLInputElement>) => {
             let newIsDoneValue = event.currentTarget.checked
-            props.changeTaskStatus(props.todolistId, newIsDoneValue, el.id)
+            dispatch(changeTaskStatusAC(id, newIsDoneValue, el.id))
         }
         const changeTaskTitle = (title: string) => {
-            props.changeTaskTitle(props.todolistId,title,el.id)
+            dispatch(changeTaskTitleAC(id, title, el.id))
         }
         const removeTask = () => {
-            props.removeTask(props.todolistId, el.id)
+            dispatch(removeTaskAC(id, el.id))
         }
         return (
 
@@ -89,7 +90,7 @@ export const Todolist = (props: TodolistProps) => {
     return (
         <div>
 <div className="flex">
-            <EditableSpan title={props.title} changeTitle={changeTodolistTitle}/>
+            <EditableSpan title={title} changeTitle={changeTodolistTitle}/>
             <IconButton onClick={removeTodoloist}>
                 <DeleteForeverIcon/>
             </IconButton>
@@ -97,22 +98,22 @@ export const Todolist = (props: TodolistProps) => {
             <AddItemForm
                 placeholder="Add task"
                 addItem={addTask}/>
-            {props.tasks.length > 0 ? <List>{todolistElements}</List> : <div>This list is empty</div>}
+            {task.length > 0 ? <List>{todolistElements}</List> : <div>This list is empty</div>}
             <div>
                 <Button
                     variant={"contained"}
-                    color={props.filter == 'all' ? "secondary" : "primary"}
-                    onClick={onAllClickHandler}>All
+                    color={filter == 'all' ? "secondary" : "primary"}
+                    onClick={()=>onClickHandler('all')}>All
                 </Button>
                 <Button style={{margin: "10px"}}
                         variant={"contained"}
-                        color={props.filter == 'active' ? "secondary" : "primary"}
-                        onClick={onActiveClickHandler}>Active
+                        color={filter == 'active' ? "secondary" : "primary"}
+                        onClick={()=>onClickHandler('active')}>Active
                 </Button>
                 <Button
                     variant={"contained"}
-                    color={props.filter == 'complete' ? "secondary" : "primary"}
-                    onClick={onCompletedClickHandler}>Completed
+                    color={filter == 'complete' ? "secondary" : "primary"}
+                    onClick={()=>onClickHandler('complete')}>Completed
                 </Button>
             </div>
         </div>
