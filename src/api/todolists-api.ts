@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+console.log(1)
+
 const settings = {
     withCredentials: true,
     headers: {
