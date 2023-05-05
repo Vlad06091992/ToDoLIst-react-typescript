@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-console.log(1)
+console.log(2)
 
 const settings = {
     withCredentials: true,
