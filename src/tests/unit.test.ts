@@ -1,3 +1,4 @@
+// @ts-ignore
 test('test', () => {
     const a = 1
     const b = 2
