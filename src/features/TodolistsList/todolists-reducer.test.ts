@@ -14,6 +14,8 @@ let todolistId1: string
 let todolistId2: string
 let startState: Array<TodolistDomainType> = []
 
+console.log(1)
+
 beforeEach(() => {
     todolistId1 = v1()
     todolistId2 = v1()
