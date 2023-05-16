@@ -25,7 +25,6 @@ const slice = createSlice({
 }
 })
 
-console.log(slice)
 
 export const initializeAppTC = () => (dispatch: Dispatch) => {
     authAPI.me().then(res => {

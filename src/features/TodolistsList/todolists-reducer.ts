@@ -4,6 +4,7 @@ import {RequestStatusType, setAppStatus} from 'app/app-reducer'
 import {handleServerNetworkError} from 'utils/error-utils'
 import {AppThunk} from 'app/store';
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {ClearTasksAndTodolistsType, cleatTasksAndTodolists} from "commons/actions/common.actions";
 
 //подскажи разницу в методах массивов в js IndexOf, findIndex, find
 
@@ -46,12 +47,16 @@ const slice = createSlice({
             return action.payload.todolists.map(el => ({...el, filter: 'all', entityStatus: 'idle'}))
         }
     },
-    // extraReducers: (builder) => {
-    //     builder
-    //         .addCase(incrementBy, (state, action) => {
-    //             // action is inferred correctly here if using TS
-    //         })
+    extraReducers: (builder) => {
+        builder
+            .addCase(cleatTasksAndTodolists,(state, action:PayloadAction<ClearTasksAndTodolistsType>)=> {
+                return action.payload.todolists
+
+            })
+    }
 })
+
+
 
 
 export const {
