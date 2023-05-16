@@ -36,7 +36,7 @@ const slice = createSlice({
         //     },
         //     prepare: (taskId:string,todolistId:string) => {
         //         return { payload: { taskId, todolistId } }
-        //     }}, //With prepare callback
+        //     }}, //With prepare Callback
 
 
 
