@@ -34,6 +34,8 @@ function App({demo = false}: PropsType) {
 	const isLoggedIn = useSelector(selectIsLoggedIn)
 	const dispatch = useAppDispatch()
 
+	console.log(isLoggedIn)
+
 	useEffect(() => {
 		dispatch(initializeAppTC())
 	}, [])
