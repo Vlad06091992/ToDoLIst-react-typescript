@@ -29,6 +29,7 @@ type PropsType = {
 }
 
 function App({demo = false}: PropsType) {
+	debugger
 	const status = useSelector(selectStatus)
 	const isInitialized = useSelector(selectIsInitialized)
 	const isLoggedIn = useSelector(selectIsLoggedIn)
@@ -52,7 +53,7 @@ function App({demo = false}: PropsType) {
 	}
 
 	return (
-		<BrowserRouter>
+
 			<div className="App">
 				<ErrorSnackbar/>
 				<AppBar position="static">
@@ -74,7 +75,7 @@ function App({demo = false}: PropsType) {
 					</Routes>
 				</Container>
 			</div>
-		</BrowserRouter>
+
 	)
 }
 
