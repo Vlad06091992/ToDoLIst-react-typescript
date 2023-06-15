@@ -1,7 +1,8 @@
 import {Dispatch} from 'redux'
 import {authAPI} from 'api/todolists-api'
-import {setIsLoggedIn} from 'features/Login/auth-reducer'
+import {_loginTC, setIsLoggedIn} from 'features/Login/auth-reducer'
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {tasksThunks} from "features/TodolistsList/tasks-reducer";
 
 const initialState = {
     status: 'idle' as RequestStatusType,
@@ -23,7 +24,17 @@ const slice = createSlice({
         setAppInitialized(state,action:PayloadAction<{isInitialized: boolean}>){
             state.isInitialized = action.payload.isInitialized
         }
-}
+},
+    extraReducers: (builder) => {
+        builder.addCase(_loginTC.fulfilled, (state, action) => {
+            state.status = 'succeeded'
+        })
+            // .addCase(tasksThunks.fetchTasks.rejected, (state, action) => {
+            //     state.error = action.payload as string
+            // })
+
+    },
+
 })
 
 
@@ -35,11 +46,11 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
 
         }
 
-        dispatch(setAppInitialized({isInitialized:true}));
+        dispatch(appActions.setAppInitialized({isInitialized:true}));
     })
 }
 
-export const{setAppInitialized,setAppStatus,setAppError} = slice.actions
+export const appActions = slice.actions
 export const appReducer = slice.reducer
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'

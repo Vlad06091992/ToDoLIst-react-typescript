@@ -1,4 +1,11 @@
-import { addTask, removeTask, setTasks, tasksReducer, TasksStateType, updateTask } from './tasks-reducer'
+import {
+    addTask,
+    removeTask,
+    tasksReducer,
+    TasksStateType,
+    tasksThunks,
+    UpdateDomainTaskModelType
+} from './tasks-reducer'
 
 import {addTodolist, removeTodolist, setTodolists} from './todolists-reducer'
 import {TaskPriorities, TaskStatuses} from '../../api/todolists-api'
@@ -26,7 +33,7 @@ beforeEach(() => {
 });
 
 test('correct task should be deleted from correct array', () => {
-    const action = removeTask({taskId:"2",todolistId: "todolistId2"});
+    const action = tasksThunks.removeTask.fulfilled({id:"2",todolistId: "todolistId2"},'',{id:"2",todolistId: "todolistId2"});
 
     const endState = tasksReducer(startState, action)
 
@@ -36,7 +43,7 @@ test('correct task should be deleted from correct array', () => {
 });
 test('correct task should be added to correct array', () => {
     //const action = addTaskAC("juce", "todolistId2");
-    const action = addTask({task:{
+    const action = tasksThunks.addTask.fulfilled({task:{
         todoListId: "todolistId2",
         title: "juce",
         status: TaskStatuses.New,
@@ -47,7 +54,7 @@ test('correct task should be added to correct array', () => {
         priority: 0,
         startDate: "",
         id: "id exists"
-    }});
+    }},'',{todolistId:'todolistId',title:'title'});
 
     const endState = tasksReducer(startState, action)
 
@@ -58,7 +65,7 @@ test('correct task should be added to correct array', () => {
     expect(endState["todolistId2"][0].status).toBe(TaskStatuses.New);
 });
 test('status of specified task should be changed', () => {
-    const action = updateTask({taskId:"2", model:{status: TaskStatuses.New},todolistId: "todolistId2"});
+    const action = tasksThunks.updateTask.fulfilled({taskId:"2", model:{status: TaskStatuses.New},todolistId: "todolistId2"},'requestId',{taskId: '2',model:{status: TaskStatuses.New}, todolistId: "todolistId2"});
 
     const endState = tasksReducer(startState, action)
 
@@ -66,7 +73,7 @@ test('status of specified task should be changed', () => {
     expect(endState["todolistId2"][1].status).toBe(TaskStatuses.New);
 });
 test('title of specified task should be changed', () => {
-    const action = updateTask({taskId:"2", model:{title: "yogurt"}, todolistId:"todolistId2"});
+    const action = tasksThunks.updateTask.fulfilled({taskId:"2", model:{title: "yogurt"}, todolistId:"todolistId2"},'requestId',{taskId: '2',model:{title: 'yogurt'}, todolistId: "todolistId2"},);
 
     const endState = tasksReducer(startState, action)
 
@@ -120,7 +127,7 @@ test('empty arrays should be added when we set todolists', () => {
     expect(endState['2']).toBeDefined()
 })
 test('tasks should be added for todolist', () => {
-    const action = setTasks({tasks:startState["todolistId1"], todolistId:"todolistId1"});
+    const action = tasksThunks.fetchTasks.fulfilled({tasks:startState["todolistId1"], todolistId:"todolistId1"},'requestId',"todolistId1");
 
     const endState = tasksReducer({
         "todolistId2": [],

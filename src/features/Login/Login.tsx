@@ -1,7 +1,7 @@
 import React from 'react'
 import { useFormik } from 'formik'
 import { useSelector } from 'react-redux'
-import { loginTC } from './auth-reducer'
+import { _loginTC } from './auth-reducer'
 import { AppRootStateType } from '../../app/store'
 import { Navigate } from 'react-router-dom'
 import { useAppDispatch } from '../../hooks/useAppDispatch';
@@ -31,7 +31,7 @@ export const Login = () => {
             rememberMe: false
         },
         onSubmit: values => {
-            dispatch(loginTC(values));
+            dispatch(_loginTC(values));
         },
     })
 
@@ -86,3 +86,4 @@ export const Login = () => {
         </Grid>
     </Grid>
 }
+

@@ -10,7 +10,7 @@ import {
 	removeTodolistTC,
 	TodolistDomainType
 } from './todolists-reducer'
-import { addTaskTC, removeTaskTC, TasksStateType, updateTaskTC } from './tasks-reducer'
+import { addTask, removeTask, TasksStateType, updateTask } from './tasks-reducer'
 import { TaskStatuses } from 'api/todolists-api'
 import { Grid, Paper } from '@mui/material'
 import { AddItemForm } from 'components/AddItemForm/AddItemForm'
@@ -39,23 +39,24 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
 			dispatch(thunk)
     }, [])
 
-    const removeTask = useCallback(function (id: string, todolistId: string) {
-        const thunk = removeTaskTC(id, todolistId)
+    const deleteTask = useCallback(function (id: string, todolistId: string) {
+        const thunk = removeTask({id, todolistId})
         dispatch(thunk)
     }, [])
 
-    const addTask = useCallback(function (title: string, todolistId: string) {
-        const thunk = addTaskTC(title, todolistId)
+    const createTask = useCallback(function (title: string, todolistId: string) {
+        const thunk = addTask({title, todolistId})
         dispatch(thunk)
     }, [])
 
     const changeStatus = useCallback(function (id: string, status: TaskStatuses, todolistId: string) {
-        const thunk = updateTaskTC(id, {status}, todolistId)
+        debugger
+        const thunk = updateTask({taskId:id, model:{status}, todolistId})
         dispatch(thunk)
     }, [])
 
     const changeTaskTitle = useCallback(function (id: string, newTitle: string, todolistId: string) {
-        const thunk = updateTaskTC(id, {title: newTitle}, todolistId)
+        const thunk = updateTask({taskId:id, model: {title:newTitle}, todolistId})
         dispatch(thunk)
     }, [])
 
@@ -97,9 +98,9 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
                             <Todolist
                                 todolist={tl}
                                 tasks={allTodolistTasks}
-                                removeTask={removeTask}
+                                deleteTask={deleteTask}
                                 changeFilter={changeFilter}
-                                addTask={addTask}
+                                createTask={createTask}
                                 changeTaskStatus={changeStatus}
                                 removeTodolist={removeTodolist}
                                 changeTaskTitle={changeTaskTitle}

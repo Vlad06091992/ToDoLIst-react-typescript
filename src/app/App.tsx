@@ -29,13 +29,11 @@ type PropsType = {
 }
 
 function App({demo = false}: PropsType) {
-	debugger
 	const status = useSelector(selectStatus)
 	const isInitialized = useSelector(selectIsInitialized)
 	const isLoggedIn = useSelector(selectIsLoggedIn)
 	const dispatch = useAppDispatch()
 
-	console.log(isLoggedIn)
 
 	useEffect(() => {
 		dispatch(initializeAppTC())
