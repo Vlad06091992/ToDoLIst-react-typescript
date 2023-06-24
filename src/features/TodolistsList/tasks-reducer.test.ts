@@ -1,3 +1,4 @@
+import {TaskPriorities, TaskStatuses} from 'common/enums/enums';
 import {
     addTask,
     removeTask,
@@ -8,7 +9,6 @@ import {
 } from './tasks-reducer'
 
 import {addTodolist, removeTodolist, setTodolists} from './todolists-reducer'
-import {TaskPriorities, TaskStatuses} from '../../api/todolists-api'
 
 let startState: TasksStateType = {};
 beforeEach(() => {

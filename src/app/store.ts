@@ -3,7 +3,7 @@ import {todolistsReducer} from 'features/TodolistsList/todolists-reducer';
 import { AnyAction, applyMiddleware, combineReducers, createStore } from 'redux'
 import thunkMiddleware, { ThunkAction, ThunkDispatch } from 'redux-thunk'
 import {appReducer} from 'app/app-reducer'
-import {authReducer} from 'features/Login/auth-reducer'
+import {authReducer} from 'features/auth/auth-reducer'
 import {configureStore} from "@reduxjs/toolkit";
 import logger from 'redux-logger'
 

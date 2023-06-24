@@ -1,24 +1,20 @@
-import React, { useCallback, useEffect } from 'react'
-import { AddItemForm } from '../../../components/AddItemForm/AddItemForm'
-import { EditableSpan } from '../../../components/EditableSpan/EditableSpan'
-import { Task } from './Task/Task'
-import { TaskStatuses, TaskType } from '../../../api/todolists-api'
-import { FilterValuesType, TodolistDomainType } from '../todolists-reducer'
-import { tasksThunks } from '../tasks-reducer'
-import { useAppDispatch } from '../../../hooks/useAppDispatch';
-import { Button, IconButton } from '@mui/material'
-import { Delete } from '@mui/icons-material'
-import {Action, Dispatch} from "redux";
-import {AppDispatch, AppRootStateType} from "app/store";
-import {ThunkDispatch} from "redux-thunk";
-import * as fs from "fs";
+import React, {useCallback, useEffect} from 'react'
+import {Task} from './Task/Task'
+import {FilterValuesType, TodolistDomainType} from '../todolists-reducer'
+import {tasksThunks} from '../tasks-reducer'
+import {useAppDispatch} from 'hooks/useAppDispatch';
+import {Button, IconButton} from '@mui/material'
+import {Delete} from '@mui/icons-material'
+import {AddItemForm, EditableSpan} from "common/components";
+import {TaskType} from "features/TodolistsList/todolists-api";
+import {TaskStatuses} from "common/enums/enums";
 
 type PropsType = {
     todolist: TodolistDomainType
     tasks: Array<TaskType>
     changeFilter: (value: FilterValuesType, todolistId: string) => void
     createTask: (title: string, todolistId: string) => void
-    changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
+    changeTaskStatus: (id: string, status: number, todolistId: string) => void
     changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
     deleteTask: (taskId: string, todolistId: string) => void
     removeTodolist: (id: string) => void

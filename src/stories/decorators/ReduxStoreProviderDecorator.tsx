@@ -5,10 +5,10 @@ import {tasksReducer} from '../../features/TodolistsList/tasks-reducer'
 import {todolistsReducer} from '../../features/TodolistsList/todolists-reducer'
 import {v1} from 'uuid'
 import {AppRootStateType} from '../../app/store'
-import {TaskPriorities, TaskStatuses} from '../../api/todolists-api'
 import {appReducer} from '../../app/app-reducer'
 import thunkMiddleware from 'redux-thunk'
-import {authReducer} from "features/Login/auth-reducer";
+import {authReducer} from "features/auth/auth-reducer";
+import {TaskPriorities, TaskStatuses} from "common/enums/enums";
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
