@@ -1,9 +1,9 @@
-
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {appActions} from "app/app-reducer";
 import {handleServerAppError} from "common/utils/";
 import {handleServerNetworkError} from "common/utils/";
 import {authAPI, LoginParamsType} from "features/auth/auth-api";
+import {clearTasksAndTodolists} from "common/actions";
 
 const initialState: InitialStateType = {
     isLoggedIn: false
@@ -49,15 +49,13 @@ export const loginTC = createAsyncThunk<null | undefined, LoginParamsType>('auth
     })
 
 
-
-
 export const logoutTC = createAsyncThunk('auth/logout', async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
 
     dispatch(appActions.setAppStatus({status: 'loading'}))
     try {
         let res = await authAPI.logout()
-
+        dispatch(clearTasksAndTodolists({task: {}, todolists: []}))
         if (res.data.resultCode === 0) {
 
         } else {
@@ -73,7 +71,6 @@ export const logoutTC = createAsyncThunk('auth/logout', async (arg, thunkAPI) =>
     }
 
 })
-
 
 
 // types

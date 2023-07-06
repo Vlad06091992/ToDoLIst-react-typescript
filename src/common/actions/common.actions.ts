@@ -7,7 +7,7 @@ export type ClearTasksAndTodolistsType = {
     todolists:TodolistDomainType[]
 }
 
-export const cleatTasksAndTodolists = createAction<ClearTasksAndTodolistsType>('common/clear-tasks-todolists')
+export const clearTasksAndTodolists = createAction<ClearTasksAndTodolistsType>('common/clear-tasks-todolists')
 
 // export const cleatTasksAndTodolists = createAction('common/clear-tasks-todolists',(tasks:TasksStateType,todolists:TodolistDomainType[])=>{
 //     return{

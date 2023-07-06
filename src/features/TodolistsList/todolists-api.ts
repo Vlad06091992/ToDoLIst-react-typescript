@@ -4,9 +4,8 @@ import {ResponseType} from "common/types/"
 
 export const todolistsApi = {
     getTodolists() {
-        const promise = instance.get<TodolistType[]>('todo-lists');
-        return promise;
-    },
+        return  instance.get<TodolistType[]>('todo-lists');
+        },
     createTodolist(title: string) {
         return instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', {title: title});
     },
@@ -14,7 +13,7 @@ export const todolistsApi = {
         return instance.delete<ResponseType>(`todo-lists/${id}`);
     },
     updateTodolist(id: string, title: string) {
-        return instance.put<ResponseType>(`todo-lists/${id}`, {title: title});
+        return instance.put<ResponseType>(`todo-lists/${id}`, {title});
     },
     getTasks(todolistId: string) {
         return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`);
@@ -58,6 +57,7 @@ export type UpdateTaskModelType = {
     deadline: string
 }
 type GetTasksResponse = {
+    resultCode: number
     error: string | null
     totalCount: number
     items: TaskType[]

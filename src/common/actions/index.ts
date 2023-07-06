@@ -1,2 +1,2 @@
-export {cleatTasksAndTodolists} from "./common.actions";
+export {clearTasksAndTodolists} from "./common.actions";
 export type { ClearTasksAndTodolistsType } from "./common.actions";

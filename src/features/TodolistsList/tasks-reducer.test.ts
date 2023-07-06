@@ -8,7 +8,7 @@ import {
     UpdateDomainTaskModelType
 } from './tasks-reducer'
 
-import {addTodolist, removeTodolist, setTodolists} from './todolists-reducer'
+import { fetchTodolists, todolistsThunks} from './todolists-reducer'
 
 let startState: TasksStateType = {};
 beforeEach(() => {
@@ -82,12 +82,12 @@ test('title of specified task should be changed', () => {
     expect(endState["todolistId2"][0].title).toBe("bread");
 });
 test('new array should be added when new todolist is added', () => {
-    const action = addTodolist({todolist:{
+    const action = todolistsThunks.addTodolist.fulfilled({todolist:{
         id: "blabla",
         title: "new todolist",
         order: 0,
         addedDate: ''
-    }});
+    }},"",{title:"yogurt"},"");
 
     const endState = tasksReducer(startState, action)
 
@@ -102,7 +102,7 @@ test('new array should be added when new todolist is added', () => {
     expect(endState[newKey]).toEqual([]);
 });
 test('propertry with todolistId should be deleted', () => {
-    const action = removeTodolist({todolistId:"todolistId2"});
+    const action = todolistsThunks.removeTodolist.fulfilled({todolistId:"todolistId2"},"",{ todolistId: "todolist2" },"");
 
     const endState = tasksReducer(startState, action)
 
@@ -113,10 +113,10 @@ test('propertry with todolistId should be deleted', () => {
 });
 
 test('empty arrays should be added when we set todolists', () => {
-    const action = setTodolists({todolists:[
+    const action = fetchTodolists.fulfilled({todolists:[
         {id: "1", title: "title 1", order: 0, addedDate: ""},
         {id: "2", title: "title 2", order: 0, addedDate: ""}
-    ]})
+    ]},'' )
 
     const endState = tasksReducer({}, action)
 
