@@ -33,10 +33,9 @@ const slice = createSlice({
 })
 
 
-export const authReducer = slice.reducer
 
 
-export const login = createAppAsyncThunk<AuthThunksReturnType, LoginParamsType>('auth/login',
+ const login = createAppAsyncThunk<AuthThunksReturnType, LoginParamsType>('auth/login',
     async (arg, thunkAPI) => {
         const {dispatch, rejectWithValue} = thunkAPI
         dispatch(setAppStatus({status: 'loading'}))
@@ -46,7 +45,6 @@ export const login = createAppAsyncThunk<AuthThunksReturnType, LoginParamsType>(
                 dispatch(setAppStatus({status: 'succeeded'}))
                 return {isLoggedIn: true}
             } else {
-                debugger
 
                 console.log(res)
 
@@ -56,14 +54,13 @@ export const login = createAppAsyncThunk<AuthThunksReturnType, LoginParamsType>(
                 return rejectWithValue(res.data)
             }
         } catch (e) {
-            debugger
             handleServerNetworkError(e, dispatch)
             return rejectWithValue(null)
         }
     })
 
 
-export const logout = createAsyncThunk<AuthThunksReturnType, void>('auth/logout', async (arg, thunkAPI) => {
+const logout = createAsyncThunk<AuthThunksReturnType, void>('auth/logout', async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
     dispatch(setAppStatus({status: 'loading'}))
     try {
@@ -86,7 +83,7 @@ export const logout = createAsyncThunk<AuthThunksReturnType, void>('auth/logout'
 })
 
 
-export const initializeAppTC = createAppAsyncThunk<AuthThunksReturnType,void>('app/initialize', async (arg, thunkAPI) => {
+ const initializeAppTC = createAppAsyncThunk<AuthThunksReturnType,void>('app/initialize', async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
     try {
         let res = await authAPI.me()
@@ -108,4 +105,6 @@ export const initializeAppTC = createAppAsyncThunk<AuthThunksReturnType,void>('a
 type AuthThunksReturnType = {isLoggedIn:boolean}
 
 export const authThunks = {login, logout,initializeAppTC}
+export const authReducer = slice.reducer
+
 

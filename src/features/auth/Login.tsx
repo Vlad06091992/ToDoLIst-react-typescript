@@ -1,7 +1,7 @@
 import React from 'react'
 import {useFormik, FormikHelpers} from 'formik'
 import {useSelector} from 'react-redux'
-import {login} from './auth-reducer'
+import {authThunks} from './auth-reducer'
 import {Navigate} from 'react-router-dom'
 import {useAppDispatch} from 'hooks/useAppDispatch';
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from '@mui/material'
@@ -33,11 +33,8 @@ export const Login = () => {
             rememberMe: false
         },
         onSubmit: (values, formikHelpers: FormikHelpers<LoginParamsType>) => {
-            dispatch(login(values))
+            dispatch(authThunks.login(values))
                 .unwrap()
-                .then(res => {
-                    debugger
-                })
                 .catch((reason: RejectType) => {
                     let fieldsErrors = reason.fieldsErrors
                     if (fieldsErrors) {
