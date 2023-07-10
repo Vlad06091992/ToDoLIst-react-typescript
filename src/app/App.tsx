@@ -3,10 +3,9 @@ import './App.css'
 import {TodolistsList} from '../features/TodolistsList/TodolistsList'
 
 import {useSelector} from 'react-redux'
-import {initializeAppTC} from './app-reducer'
 import {Route, Routes} from 'react-router-dom'
 import {Login} from '../features/auth/Login'
-import {logoutTC} from '../features/auth/auth-reducer'
+import {initializeAppTC, logout} from '../features/auth/auth-reducer'
 import {
 	AppBar,
 	Button,
@@ -40,7 +39,7 @@ function App({demo = false}: PropsType) {
 	}, [])
 
 	const logoutHandler = useCallback(() => {
-		dispatch(logoutTC())
+		dispatch(logout())
 	}, [])
 
 	if (!isInitialized) {

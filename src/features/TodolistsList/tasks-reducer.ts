@@ -4,9 +4,9 @@ import {AppRootStateType} from 'app/store'
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ClearTasksAndTodolistsType, clearTasksAndTodolists} from "common/actions/";
 
-import {appActions} from 'app/app-reducer'
+import { setAppStatus} from 'app/app-reducer'
 import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from "common/utils";
-import {logoutTC} from "features/auth/auth-reducer";
+import {logout} from "features/auth/auth-reducer";
 import {TaskType, todolistsApi, UpdateTaskModelType} from "features/TodolistsList/todolists-api";
 import {AxiosError, isAxiosError} from "axios";
 import {ResultCode} from "common/enums/enums";
@@ -73,9 +73,9 @@ const slice = createSlice({
                 }
 
             })
-            .addCase(clearTasksAndTodolists, (state, action: PayloadAction<ClearTasksAndTodolistsType>) => {
+            .addCase(clearTasksAndTodolists, (state, action) => {
                     // console.log(current(state)) // для логирование стэйта в консоль
-                    return action.payload.task
+                    return {}
                 }
             )
 
@@ -87,10 +87,10 @@ const slice = createSlice({
 const fetchTasks = createAppAsyncThunk<FetchTaskReturnType, string>('tasks/fetchTasks', async (todolistId: string, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
     try {
-        dispatch(appActions.setAppStatus({status: 'loading'}))
+        dispatch(setAppStatus({status: 'loading'}))
         const res = await todolistsApi.getTasks(todolistId)
         const tasks = res.data.items
-        dispatch(appActions.setAppStatus({status: 'succeeded'}))
+        dispatch(setAppStatus({status: 'succeeded'}))
         return {tasks, todolistId}
     } catch (e: any) {
         handleServerNetworkError(e, dispatch)
@@ -102,11 +102,11 @@ export const addTask = createAppAsyncThunk<AddTaskReturnType, AddTaskArgType>('t
     const {rejectWithValue, dispatch} = thunkAPI
     const {todolistId, title} = arg
     try {
-        dispatch(appActions.setAppStatus({status: 'loading'}))
+        dispatch(setAppStatus({status: 'loading'}))
         let res = await todolistsApi.createTask(todolistId, title)
         if (res.data.resultCode === ResultCode.success) {
             let task = res.data.data.item
-            dispatch(appActions.setAppStatus({status: 'succeeded'}))
+            dispatch(setAppStatus({status: 'succeeded'}))
             return {task}
         } else {
             handleServerAppError(res.data, dispatch)
@@ -124,10 +124,10 @@ export const removeTask = createAppAsyncThunk<RemoveTaskArgType, RemoveTaskArgTy
     const {dispatch, rejectWithValue} = thunkAPI
     const {todolistId, id} = arg
     try {
-        dispatch(appActions.setAppStatus({status: 'loading'}))
+        dispatch(setAppStatus({status: 'loading'}))
         let res = await todolistsApi.deleteTask(todolistId, id)
         if (res.data.resultCode === ResultCode.success) {
-            dispatch(appActions.setAppStatus({status: 'succeeded'}))
+            dispatch(setAppStatus({status: 'succeeded'}))
             return {id, todolistId}
         } else {
             handleServerAppError(res.data, dispatch)
@@ -147,7 +147,7 @@ export const updateTask = createAppAsyncThunk<UpdateTaskArgType, UpdateTaskArgTy
     const {taskId, model, todolistId} = arg
     // @ts-ignore
     try {
-        dispatch(appActions.setAppStatus({status: 'loading'}))
+        dispatch(setAppStatus({status: 'loading'}))
         const state: AppRootStateType = getState()
         const task = state.tasks[todolistId].find(t => t.id === taskId) as UpdateTaskModelType
         if (!task) {
@@ -174,7 +174,7 @@ export const updateTask = createAppAsyncThunk<UpdateTaskArgType, UpdateTaskArgTy
 
         let res = await todolistsApi.updateTask(todolistId, taskId, apiModel)
         if (res.data.resultCode === ResultCode.success) {
-            dispatch(appActions.setAppStatus({status: 'succeeded'}))
+            dispatch(setAppStatus({status: 'succeeded'}))
             return {taskId, model, todolistId}
         } else {
             handleServerAppError(res.data, dispatch)

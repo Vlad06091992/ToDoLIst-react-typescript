@@ -1,27 +1,30 @@
 import React from 'react'
-import {useFormik} from 'formik'
+import {useFormik, FormikHelpers} from 'formik'
 import {useSelector} from 'react-redux'
-import {loginTC} from './auth-reducer'
+import {login} from './auth-reducer'
 import {Navigate} from 'react-router-dom'
 import {useAppDispatch} from 'hooks/useAppDispatch';
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from '@mui/material'
 import {selectIsLoggedIn} from "features/auth/auth-selectors";
+import {LoginParamsType} from "features/auth/auth-api";
+import {RejectType} from "common/utils/create-app-async-thunk";
+import style from "./Login.module.css"
 
 export const Login = () => {
     const dispatch = useAppDispatch()
     const isLoggedIn = useSelector(selectIsLoggedIn);
     const formik = useFormik({
         validate: (values) => {
-            if (!values.email) {
-                return {
-                    email: 'Email is required'
-                }
-            }
-            if (!values.password) {
-                return {
-                    password: 'Password is required'
-                }
-            }
+            // if (!values.email) {
+            //     return {
+            //         email: 'Email is required'
+            //     }
+            // }
+            // if (!values.password) {
+            //     return {
+            //         password: 'Password is required'
+            //     }
+            // }
 
         },
         initialValues: {
@@ -29,13 +32,24 @@ export const Login = () => {
             password: '',
             rememberMe: false
         },
-        onSubmit: values => {
-            dispatch(loginTC(values));
+        onSubmit: (values, formikHelpers: FormikHelpers<LoginParamsType>) => {
+            dispatch(login(values))
+                .unwrap()
+                .then(res => {
+                    debugger
+                })
+                .catch((reason: RejectType) => {
+                    let fieldsErrors = reason.fieldsErrors
+                    if (fieldsErrors) {
+                        fieldsErrors.forEach((el) => formikHelpers.setFieldError(el.field, el.error))
+                    }
+
+                });
         },
     })
 
     if (isLoggedIn) {
-        return <Navigate to={"/"} />
+        return <Navigate to={"/"}/>
     }
 
 
@@ -63,14 +77,14 @@ export const Login = () => {
                             margin="normal"
                             {...formik.getFieldProps("email")}
                         />
-                        {formik.errors.email ? <div>{formik.errors.email}</div> : null}
+                        {formik.errors.email ? <div className={style.error}>{formik.errors.email}</div> : null}
                         <TextField
                             type="password"
                             label="Password"
                             margin="normal"
                             {...formik.getFieldProps("password")}
                         />
-                        {formik.errors.password ? <div>{formik.errors.password}</div> : null}
+                        {formik.errors.password ? <div className={style.error}>{formik.errors.password}</div> : null}
                         <FormControlLabel
                             label={'Remember me'}
                             control={<Checkbox
