@@ -8,6 +8,8 @@ import {Delete} from '@mui/icons-material'
 import {AddItemForm, EditableSpan} from "common/components";
 import {TaskType} from "features/TodolistsList/todolists-api";
 import {TaskStatuses} from "common/enums/enums";
+import {useActions} from "hooks/useActions";
+import {authThunks} from "features/auth/auth-reducer";
 
 type PropsType = {
     todolist: TodolistDomainType
@@ -24,14 +26,12 @@ type PropsType = {
 
 export const Todolist = React.memo(function ({demo = false, ...props}: PropsType) {
 
-    const dispatch = useAppDispatch()
-
+    const {fetchTasks} = useActions(tasksThunks)
     useEffect(() => {
         if (demo) {
             return
         }
-        const thunk = tasksThunks.fetchTasks(props.todolist.id)
-        dispatch(thunk)
+        fetchTasks(props.todolist.id)
     }, [])
 
     const addTask = useCallback((title: string) => {

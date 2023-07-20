@@ -1,15 +1,11 @@
 import React, {useCallback, useEffect} from 'react'
 import {useSelector} from 'react-redux'
-import {
-    changeTodolistFilter,
-    FilterValuesType, todolistsThunks
-} from './todolists-reducer'
+import {changeTodolistFilter, FilterValuesType, todolistsThunks} from './todolists-reducer'
 
 import {Grid, Paper} from '@mui/material'
 
 import {Todolist} from './Todolist/Todolist'
 import {Navigate} from 'react-router-dom'
-import {useAppDispatch} from 'hooks/useAppDispatch';
 import {selectTasks, selectTodolists} from "features/TodolistsList/todolistList-selectors";
 import {selectIsLoggedIn} from "features/auth/auth-selectors";
 import {AddItemForm} from "common/components";

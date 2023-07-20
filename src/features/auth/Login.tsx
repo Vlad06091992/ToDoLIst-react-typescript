@@ -1,30 +1,27 @@
 import React from 'react'
-import {useFormik, FormikHelpers} from 'formik'
+import {FormikHelpers, useFormik} from 'formik'
 import {useSelector} from 'react-redux'
 import {authThunks} from './auth-reducer'
 import {Navigate} from 'react-router-dom'
-import {useAppDispatch} from 'hooks/useAppDispatch';
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from '@mui/material'
 import {selectIsLoggedIn} from "features/auth/auth-selectors";
 import {LoginParamsType} from "features/auth/auth-api";
 import {RejectType} from "common/utils/create-app-async-thunk";
 import style from "./Login.module.css"
+import {useActions} from "hooks/useActions";
 
 export const Login = () => {
-    const dispatch = useAppDispatch()
+    const{login} = useActions(authThunks)
     const isLoggedIn = useSelector(selectIsLoggedIn);
     const formik = useFormik({
         validate: (values) => {
-            // if (!values.email) {
-            //     return {
-            //         email: 'Email is required'
-            //     }
-            // }
-            // if (!values.password) {
-            //     return {
-            //         password: 'Password is required'
-            //     }
-            // }
+
+            const errors: any = {}
+            if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+                errors.email = 'Invalid email address'
+            }
+
+            return errors
 
         },
         initialValues: {
@@ -33,12 +30,14 @@ export const Login = () => {
             rememberMe: false
         },
         onSubmit: (values, formikHelpers: FormikHelpers<LoginParamsType>) => {
-            dispatch(authThunks.login(values))
+          login(values)
                 .unwrap()
                 .catch((reason: RejectType) => {
                     let fieldsErrors = reason.fieldsErrors
                     if (fieldsErrors) {
-                        fieldsErrors.forEach((el) => formikHelpers.setFieldError(el.field, el.error))
+                        fieldsErrors.forEach((el) =>{
+                            debugger
+                            formikHelpers.setFieldError(el.field, el.error)})
                     }
 
                 });
@@ -74,14 +73,16 @@ export const Login = () => {
                             margin="normal"
                             {...formik.getFieldProps("email")}
                         />
-                        {formik.errors.email ? <div className={style.error}>{formik.errors.email}</div> : null}
+                        {formik.errors.email && formik.touched.email ?
+                            <div className={style.error}>{formik.errors.email}</div> : null}
                         <TextField
                             type="password"
                             label="Password"
                             margin="normal"
                             {...formik.getFieldProps("password")}
                         />
-                        {formik.errors.password ? <div className={style.error}>{formik.errors.password}</div> : null}
+                        {formik.errors.password && formik.touched.password ?
+                            <div className={style.error}>{formik.errors.password}</div> : null}
                         <FormControlLabel
                             label={'Remember me'}
                             control={<Checkbox
@@ -89,7 +90,11 @@ export const Login = () => {
                                 checked={formik.values.rememberMe}
                             />}
                         />
-                        <Button type={'submit'} variant={'contained'} color={'primary'}>Login</Button>
+                        <Button disabled={!!formik.errors.password ||
+                            !!formik.errors.email ||
+                            formik.values.password.length < 1 ||
+                            formik.values.email.length < 1} type={'submit'} variant={'contained'}
+                                color={'primary'}>Login</Button>
                     </FormGroup>
                 </FormControl>
             </form>

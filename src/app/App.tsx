@@ -32,7 +32,7 @@ function App({demo = false}: PropsType) {
     const status = useSelector(selectStatus)
     const isInitialized = useSelector(selectIsInitialized)
     const isLoggedIn = useSelector(selectIsLoggedIn)
-    const dispatch = useAppDispatch()
+
 
     const {initializeAppTC, logout} = useActions(authThunks)
 
@@ -42,9 +42,7 @@ function App({demo = false}: PropsType) {
         initializeAppTC()
     }, [])
 
-    const logoutHandler = useCallback(() => {
-        logout()
-    }, [])
+    const logoutHandler = useCallback(() => logout(), [])
 
     if (!isInitialized) {
         return <div
