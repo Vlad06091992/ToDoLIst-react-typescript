@@ -10,13 +10,15 @@ import {RejectType} from "common/utils/create-app-async-thunk";
 import style from "./Login.module.css"
 import {useActions} from "hooks/useActions";
 
+//TODO 25.10
+
 export const Login = () => {
     const{login} = useActions(authThunks)
     const isLoggedIn = useSelector(selectIsLoggedIn);
     const formik = useFormik({
         validate: (values) => {
 
-            const errors: any = {}
+            const errors: Omit<Partial<LoginParamsType>,'captcha'> = {}
             if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
                 errors.email = 'Invalid email address'
             }

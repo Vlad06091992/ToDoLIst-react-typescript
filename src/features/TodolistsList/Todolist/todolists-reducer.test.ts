@@ -3,10 +3,10 @@ import {
     FilterValuesType,
     TodolistDomainType,
     todolistsReducer, todolistsThunks
-} from './todolists-reducer'
+} from 'features/TodolistsList/Todolist/todolists-reducer'
 import {v1} from 'uuid'
 import {RequestStatusType} from 'app/app-reducer'
-import {TodolistType} from "features/TodolistsList/todolists-api";
+import {TodolistType} from "features/TodolistsList/Todolist/todolists-api";
 
 let todolistId1: string
 let todolistId2: string

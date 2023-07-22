@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
-import {todolistsApi} from "features/TodolistsList/todolists-api";
+import {todolistsApi} from "features/TodolistsList/Todolist/todolists-api";
+import {tasksApi} from "features/TodolistsList/Task/tasks-api";
 
 
 export default {
@@ -71,7 +72,7 @@ export const GetTasks = () => {
 
 
     const getTasks = () => {
-        todolistsApi.getTasks(todolistId)
+        tasksApi.getTasks(todolistId)
             .then((res) => {
                 setState(res.data)
             })
@@ -95,7 +96,7 @@ export const DeleteTask = () => {
     const [todolistId, setTodolistId] = useState<string>('')
 
     const deleteTask = () => {
-        todolistsApi.deleteTask(todolistId, taskId)
+        tasksApi.deleteTask(todolistId, taskId)
             .then((res) => {
                 setState(res.data)
             })
@@ -122,7 +123,7 @@ export const CreateTask = () => {
     const [todolistId, setTodolistId] = useState<string>('')
 
     const createTask = () => {
-        todolistsApi.createTask(todolistId, taskTitle)
+        tasksApi.createTask(todolistId, taskTitle)
             .then((res) => {
                 setState(res.data)
             })
@@ -156,7 +157,7 @@ export const UpdateTask = () => {
     const [taskId, setTaskId] = useState<string>('')
 
     const createTask = () => {
-        todolistsApi.updateTask(todolistId, taskId, {
+        tasksApi.updateTask(todolistId, taskId, {
             deadline: "",
             description: description,
             priority: priority,
