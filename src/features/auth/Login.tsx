@@ -10,7 +10,7 @@ import {RejectType} from "common/utils/create-app-async-thunk";
 import style from "./Login.module.css"
 import {useActions} from "hooks/useActions";
 
-//TODO 25.10
+
 
 export const Login = () => {
     const{login} = useActions(authThunks)

@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from 'react'
 import {useSelector} from 'react-redux'
-import {changeTodolistFilter, FilterValuesType, todolistsThunks} from 'features/TodolistsList/Todolist/todolists-reducer'
+import {todolistsThunks} from 'features/TodolistsList/Todolist/todolists-reducer'
 
 import {Grid, Paper} from '@mui/material'
 
@@ -9,7 +9,6 @@ import {Navigate} from 'react-router-dom'
 import {selectTasks, selectTodolists} from "features/TodolistsList/todolistList-selectors";
 import {selectIsLoggedIn} from "features/auth/auth-selectors";
 import {AddItemForm} from "common/components";
-import {tasksThunks} from "features/TodolistsList/Task/tasks-reducer";
 import {useActions} from "hooks/useActions";
 
 type PropsType = {
@@ -20,12 +19,9 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     const todolists = useSelector(selectTodolists)
     const tasks = useSelector(selectTasks)
     const isLoggedIn = useSelector(selectIsLoggedIn)
-    const {updateTask, removeTask, addTask, fetchTasks} = useActions(tasksThunks)
+
     const {
-        changeTodolistTitle: changeTodolistTitleThunk,
-        removeTodolist,
-        addTodolist: AddTodolistThunk,
-        fetchTodolists
+        addTodolist, fetchTodolists
     } = useActions(todolistsThunks)
 
 
@@ -36,29 +32,9 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
         fetchTodolists()
     }, [])
 
-    const deleteTask = useCallback(function (id: string, todolistId: string) {
-        removeTask({id, todolistId})
-    }, [])
 
-    const createTask = useCallback(function (title: string, todolistId: string) {
-        addTask({title, todolistId})
-    }, [])
-
-
-    const changeFilter = useCallback(function (value: FilterValuesType, todolistId: string) {
-     changeTodolistFilter({id: todolistId, filter: value})
-    }, [])
-
-    const deleteTodolist = useCallback(function (id: string) {
-        removeTodolist({todolistId: id})
-    }, [])
-
-    const changeTodolistTitle = useCallback(function (id: string, title: string) {
-     changeTodolistTitleThunk({id, title})
-    }, [])
-
-    const addTodolist = useCallback((title: string) => {
-        AddTodolistThunk({title})
+    const addTodolistCallback = useCallback((title: string) => {
+        addTodolist({title})
     }, [])
 
     if (!isLoggedIn) {
@@ -67,7 +43,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
 
     return <>
         <Grid container style={{padding: '20px'}}>
-            <AddItemForm addItem={addTodolist}/>
+            <AddItemForm addItem={addTodolistCallback}/>
         </Grid>
         <Grid container spacing={3}>
             {
@@ -79,10 +55,6 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
                             <Todolist
                                 todolist={tl}
                                 tasks={allTodolistTasks}
-                                changeFilter={changeFilter}
-                                createTask={createTask}
-                                deleteTodolist={deleteTodolist}
-                                changeTodolistTitle={changeTodolistTitle}
                                 demo={demo}
                             />
                         </Paper>

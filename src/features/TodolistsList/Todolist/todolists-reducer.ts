@@ -66,7 +66,7 @@ export const removeTodolist = createAppAsyncThunk<RemoveTodolistType, RemoveTodo
     let {dispatch, rejectWithValue} = thunkAPI
     let {todolistId} = arg
     return thunkTryCatch(thunkAPI, async () => {
-        dispatch(changeTodolistEntityStatus({todolistId, entityStatus: 'loading'}))
+        dispatch(todolistsActions.changeTodolistEntityStatus({todolistId, entityStatus: 'loading'}))
         let res = await todolistsApi.deleteTodolist(todolistId)
         if (res.data.resultCode === ResultCode.success) {
             dispatch(setAppStatus({status: "succeeded"}))
@@ -112,7 +112,7 @@ export type TodolistDomainType = TodolistType & {
 }
 
 
-export const {changeTodolistFilter, changeTodolistEntityStatus} = slice.actions
+export const todolistsActions = slice.actions
 export const todolistsReducer = slice.reducer
 export const todolistsThunks = {removeTodolist, addTodolist, changeTodolistTitle, fetchTodolists}
 
