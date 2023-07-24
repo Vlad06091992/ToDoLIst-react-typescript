@@ -9,6 +9,7 @@ import {TaskStatuses} from "common/enums/enums";
 import {useActions} from "hooks/useActions";
 import {TaskType} from "features/TodolistsList/Task/tasks-api";
 import {FilterTaskButtons} from "features/TodolistsList/Todolist/FilterTaskButtons/FilterTaskButtons";
+import {Tasks} from "features/TodolistsList/Todolist/Tasks/Tasks";
 
 type Props = {
     todolist: TodolistDomainType
@@ -16,7 +17,7 @@ type Props = {
     demo?: boolean
 }
 
-export const Todolist:React.FC<Props> = React.memo(function ({demo = false, todolist,tasks}) {
+export const Todolist: React.FC<Props> = React.memo(function ({demo = false, todolist, tasks}) {
     const {addTask, fetchTasks} = useActions(tasksThunks)
     const {changeTodolistTitle, removeTodolist} = useActions(todolistsThunks)
 
@@ -26,7 +27,6 @@ export const Todolist:React.FC<Props> = React.memo(function ({demo = false, todo
         }
         fetchTasks(todolist.id)
     }, [])
-
 
 
     const removeTodolistCallback = useCallback(function () {
@@ -58,13 +58,9 @@ export const Todolist:React.FC<Props> = React.memo(function ({demo = false, todo
             </IconButton>
         </h3>
         <AddItemForm addItem={addTaskCallback} disabled={todolist.entityStatus === 'loading'}/>
-        <div>
-            {
-                tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={todolist.id}/>)
-            }
-        </div>
+        <Tasks tasksForTodolist={tasksForTodolist} todolistId={todolist.id}/>
         <div style={{paddingTop: '10px'}}>
-          <FilterTaskButtons todolistId={todolist.id} todolistFilter={todolist.filter}/>
+            <FilterTaskButtons todolistId={todolist.id} todolistFilter={todolist.filter}/>
         </div>
     </div>
 })
