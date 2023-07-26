@@ -14,12 +14,13 @@ export const createAppAsyncThunk = createAsyncThunk.withTypes<{
 
 
 export type RejectType = {
-	data: {};
 	messages: string[];
 	fieldsErrors: FieldErrorsType[];
 	resultCode: number;
+	showGlobalError:boolean
 }
 export type FieldErrorsType = {
 	field: string;
 	error: string;
 }
+

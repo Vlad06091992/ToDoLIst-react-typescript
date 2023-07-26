@@ -60,20 +60,15 @@ export const fetchTodolists = createAppAsyncThunk<FetchTodolistsReturnType, Fetc
 })
 
 
-export const removeTodolist = createAppAsyncThunk<RemoveTodolistType, RemoveTodolistType>('todolists/removeTodolist', async (arg, thunkAPI) => {
+export const removeTodolist = createAppAsyncThunk<RemoveTodolistType, RemoveTodolistType>('todolists/removeTodolist', async ({todolistId}, thunkAPI) => {
     let {dispatch, rejectWithValue} = thunkAPI
-    let {todolistId} = arg
-    return thunkTryCatch(thunkAPI, async () => {
-        dispatch(todolistsActions.changeTodolistEntityStatus({todolistId, entityStatus: 'loading'}))
+    dispatch(todolistsActions.changeTodolistEntityStatus({todolistId, entityStatus: 'loading'}))
         let res = await todolistsApi.deleteTodolist(todolistId)
         if (res.data.resultCode === ResultCode.success) {
-            dispatch(setAppStatus({status: "succeeded"}))
             return {todolistId}
         } else {
-            handleServerNetworkError(res.data, dispatch)
-            return rejectWithValue(null)
+            return rejectWithValue({data:res.data, showGlobalError:false});
         }
-    })
 })
 
 
@@ -85,7 +80,8 @@ const addTodolist = createAppAsyncThunk<AddTodolistReturnType, AddTodolistArgTyp
     if (res.data.resultCode === ResultCode.success) {
         return {todolist: res.data.data.item};
     } else {
-        return rejectWithValue(res.data);
+        debugger
+        return rejectWithValue({data:res.data, showGlobalError:false});
     }
 })
 

@@ -23,10 +23,6 @@ const slice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        // debugger
-        // builder.addCase(authThunks.login.fulfilled, (state, action) => {
-        //     state.status = 'succeeded'
-        // })
         builder.addMatcher(
             (value) => {
                 return value.type.endsWith('pending')
@@ -35,26 +31,30 @@ const slice = createSlice({
                 state.status = 'loading'
             })
             .addMatcher(
-                (value) => {
-                    return value.type.endsWith('rejected')
-                },
+                action => action.type.endsWith('/rejected'),
                 (state, action) => {
-                    if(action.payload){
-                        state.error = action.payload.messages[0] as string
-
+                    const { payload, error } = action
+                    if (payload) {
+                        if (payload.showGlobalError) {
+                            state.error = payload.data.messages.length ? payload.data.messages[0] : 'Some error occurred'
+                        }
                     } else {
-                        debugger
-                        console.log(action)
-                        state.error = action.error.message as string
-
+                        state.error = error.message ? error.message : 'Some error occurred'
                     }
                     state.status = 'failed'
-                })
+                }
+            )
+            .addMatcher(
+                action => action.type.endsWith('/fulfilled'),
+                state => {
+                    state.status = 'succeeded'
+                }
+            )
             .addMatcher(
                 (value) => {
                     return value.type.endsWith('fulfilled')
                 },
-                (state, action) => {
+                (state) => {
                     state.status = 'succeeded'
                 })
     },

@@ -101,8 +101,8 @@ const addTask = createAppAsyncThunk<AddTaskReturnType, AddTaskArgType>('tasks/ad
             let task = res.data.data.item
             return {task}
         }  else {
-            handleServerAppError(res.data, dispatch,false);
-            return rejectWithValue(res.data.messages[0])
+            return rejectWithValue({data:res.data, showGlobalError:false});
+
         }
     })
 
