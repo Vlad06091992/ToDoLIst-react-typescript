@@ -55,10 +55,8 @@ const slice = createSlice({
 })
 
 export const fetchTodolists = createAppAsyncThunk<FetchTodolistsReturnType, FetchTodolistsArgType>('todolists/fetchTodolsits', async (arg, thunkAPI) => {
-    return thunkTryCatch(thunkAPI, async () => {
-        let res = await todolistsApi.getTodolists()
+    let res = await todolistsApi.getTodolists()
         return {todolists: res.data}
-    })
 })
 
 
@@ -78,23 +76,23 @@ export const removeTodolist = createAppAsyncThunk<RemoveTodolistType, RemoveTodo
     })
 })
 
-const addTodolist = createAppAsyncThunk<AddTodolistReturnType, AddTodolistArgType>('todolists/addTodolist', async (arg, thunkAPI) => {
-    return thunkTryCatch(thunkAPI, async () => {
-        const{dispatch,rejectWithValue} = thunkAPI
-        const res = await todolistsApi.createTodolist(arg.title);
-        if (res.data.resultCode === ResultCode.success) {
-            return { todolist: res.data.data.item };
-        } else {
-            handleServerAppError(res.data, dispatch,false);
-            return rejectWithValue(res.data.messages[0]);
-        }
-    });
+
+const addTodolist = createAppAsyncThunk<AddTodolistReturnType, AddTodolistArgType>('todolists/addTodolist', async (arg, {
+    dispatch,
+    rejectWithValue
+}) => {
+    const res = await todolistsApi.createTodolist(arg.title);
+    if (res.data.resultCode === ResultCode.success) {
+        return {todolist: res.data.data.item};
+    } else {
+        return rejectWithValue(res.data);
+    }
 })
 
 
 const changeTodolistTitle = createAppAsyncThunk<ChangeTodolistTitleType, ChangeTodolistTitleType>('todolists/changeTodolists', async (arg, thunkAPI) => {
     const {id, title} = arg
-    const { dispatch, rejectWithValue } = thunkAPI
+    const {dispatch, rejectWithValue} = thunkAPI
     return thunkTryCatch(thunkAPI, async () => {
         let res = await todolistsApi.updateTodolist(arg.id, arg.title)
         if (res.data.resultCode === ResultCode.success) {

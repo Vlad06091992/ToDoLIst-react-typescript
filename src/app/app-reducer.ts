@@ -34,13 +34,29 @@ const slice = createSlice({
             (state, action) => {
                 state.status = 'loading'
             })
-            // .addMatcher(
-            //     (value) => {
-            //         return value.type.endsWith('rejected')
-            //     },
-            //     (state, action) => {
-            //         state.error = action.payload
-            //     })
+            .addMatcher(
+                (value) => {
+                    return value.type.endsWith('rejected')
+                },
+                (state, action) => {
+                    if(action.payload){
+                        state.error = action.payload.messages[0] as string
+
+                    } else {
+                        debugger
+                        console.log(action)
+                        state.error = action.error.message as string
+
+                    }
+                    state.status = 'failed'
+                })
+            .addMatcher(
+                (value) => {
+                    return value.type.endsWith('fulfilled')
+                },
+                (state, action) => {
+                    state.status = 'succeeded'
+                })
     },
 
 })

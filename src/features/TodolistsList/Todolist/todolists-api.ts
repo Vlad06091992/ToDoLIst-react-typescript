@@ -4,7 +4,7 @@ import {ResponseType} from "common/types"
 
 export const todolistsApi = {
     getTodolists() {
-        return  instance.get<TodolistType[]>('todo-lists');
+        return  instance.get<TodolistType[]>('todo-listsddd');
         },
     createTodolist(title: string) {
         return instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', {title: title});

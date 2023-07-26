@@ -18,7 +18,6 @@ import {
 import {Menu} from '@mui/icons-material'
 import {selectIsLoggedIn} from "features/auth/auth-selectors";
 import {selectIsInitialized, selectStatus} from "app/app-selectors";
-import {useAppDispatch} from "hooks/useAppDispatch";
 import {ErrorSnackbar} from "common/components";
 import {useActions} from "hooks/useActions";
 import {authThunks} from "features/auth/auth-reducer";
