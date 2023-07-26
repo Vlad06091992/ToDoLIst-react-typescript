@@ -19,7 +19,6 @@ import {AppDispatch, AppRootStateType} from "app/store";
 export const thunkTryCatch = async (thunkAPI: BaseThunkAPI<AppRootStateType, unknown,AppDispatch,unknown>, logic: Function) => {
     const {dispatch, rejectWithValue} = thunkAPI
     try {
-        dispatch(setAppStatus({status: 'loading'}))
         return await logic()
     } catch (e: any) {
         handleServerNetworkError(e, dispatch)

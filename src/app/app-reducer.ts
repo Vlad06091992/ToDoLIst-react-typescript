@@ -23,17 +23,30 @@ const slice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(authThunks.login.fulfilled, (state, action) => {
-            state.status = 'succeeded'
-        })
-
+        // debugger
+        // builder.addCase(authThunks.login.fulfilled, (state, action) => {
+        //     state.status = 'succeeded'
+        // })
+        builder.addMatcher(
+            (value) => {
+                return value.type.endsWith('pending')
+            },
+            (state, action) => {
+                state.status = 'loading'
+            })
+            // .addMatcher(
+            //     (value) => {
+            //         return value.type.endsWith('rejected')
+            //     },
+            //     (state, action) => {
+            //         state.error = action.payload
+            //     })
     },
 
 })
 
 
-
-export const {setAppInitialized,setAppStatus,setAppError} = slice.actions
+export const {setAppInitialized, setAppStatus, setAppError} = slice.actions
 export const appReducer = slice.reducer
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
