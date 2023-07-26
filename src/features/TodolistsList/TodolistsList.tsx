@@ -34,7 +34,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
 
 
     const addTodolistCallback = useCallback((title: string) => {
-        addTodolist({title})
+       return addTodolist({title}).unwrap()
     }, [])
 
     if (!isLoggedIn) {

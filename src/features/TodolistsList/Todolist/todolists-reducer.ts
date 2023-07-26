@@ -2,7 +2,7 @@ import {RequestStatusType, setAppStatus} from 'app/app-reducer'
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {clearTasksAndTodolists, ClearTasksAndTodolistsType} from "common/actions/common.actions";
 import {todolistsApi, TodolistType} from "features/TodolistsList/Todolist/todolists-api";
-import {createAppAsyncThunk, handleServerNetworkError} from "common/utils";
+import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from "common/utils";
 import {ResultCode} from "common/enums/enums";
 import {thunkTryCatch} from "common/utils/thunkTryCatch";
 
@@ -80,17 +80,29 @@ export const removeTodolist = createAppAsyncThunk<RemoveTodolistType, RemoveTodo
 
 const addTodolist = createAppAsyncThunk<AddTodolistReturnType, AddTodolistArgType>('todolists/addTodolist', async (arg, thunkAPI) => {
     return thunkTryCatch(thunkAPI, async () => {
-        let res = await todolistsApi.createTodolist(arg.title)
-        return {todolist: res.data.data.item}
-    })
+        const{dispatch,rejectWithValue} = thunkAPI
+        const res = await todolistsApi.createTodolist(arg.title);
+        if (res.data.resultCode === ResultCode.success) {
+            return { todolist: res.data.data.item };
+        } else {
+            handleServerAppError(res.data, dispatch,false);
+            return rejectWithValue(res.data.messages[0]);
+        }
+    });
 })
 
 
 const changeTodolistTitle = createAppAsyncThunk<ChangeTodolistTitleType, ChangeTodolistTitleType>('todolists/changeTodolists', async (arg, thunkAPI) => {
     const {id, title} = arg
+    const { dispatch, rejectWithValue } = thunkAPI
     return thunkTryCatch(thunkAPI, async () => {
-        await todolistsApi.updateTodolist(arg.id, arg.title)
-        return {id, title}
+        let res = await todolistsApi.updateTodolist(arg.id, arg.title)
+        if (res.data.resultCode === ResultCode.success) {
+            return {id, title}
+        } else {
+            handleServerAppError(res.data, dispatch);
+            return rejectWithValue(null);
+        }
     })
 })
 

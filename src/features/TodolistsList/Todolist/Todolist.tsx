@@ -1,10 +1,7 @@
 import React, {useCallback, useEffect} from 'react'
-import {Task} from '../Task/Task'
-import {TodolistDomainType, todolistsActions, todolistsThunks} from 'features/TodolistsList/Todolist/todolists-reducer'
+import {TodolistDomainType} from 'features/TodolistsList/Todolist/todolists-reducer'
 import {tasksThunks} from 'features/TodolistsList/Task/tasks-reducer'
-import {IconButton} from '@mui/material'
-import {Delete} from '@mui/icons-material'
-import {AddItemForm, EditableSpan} from "common/components";
+import {AddItemForm} from "common/components";
 import {TaskStatuses} from "common/enums/enums";
 import {useActions} from "hooks/useActions";
 import {TaskType} from "features/TodolistsList/Task/tasks-api";
@@ -18,6 +15,8 @@ type Props = {
     demo?: boolean
 }
 
+//TODO 02.08.00
+
 export const Todolist: React.FC<Props> = React.memo(function ({demo = false, todolist, tasks}) {
     const {addTask, fetchTasks} = useActions(tasksThunks)
     useEffect(() => {
@@ -28,7 +27,7 @@ export const Todolist: React.FC<Props> = React.memo(function ({demo = false, tod
     }, [])
 
     const addTaskCallback = useCallback((title: string) => {
-        addTask({title, todolistId: todolist.id})
+        return addTask({title, todolistId: todolist.id}).unwrap()
     }, [addTask, todolist.id])
 
 

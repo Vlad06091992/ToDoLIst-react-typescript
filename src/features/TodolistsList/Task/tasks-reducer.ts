@@ -93,7 +93,7 @@ const fetchTasks = createAppAsyncThunk<FetchTaskReturnType, string>('tasks/fetch
 })
 
 const addTask = createAppAsyncThunk<AddTaskReturnType, AddTaskArgType>('tasks/addTask', async (arg, thunkAPI)=> {
-    const {dispatch,rejectWithValue} = thunkAPI
+    const {rejectWithValue,dispatch} = thunkAPI
     const {todolistId, title} = arg
     return thunkTryCatch(thunkAPI, async () => {
         let res = await tasksApi.createTask(todolistId, title)
@@ -101,8 +101,8 @@ const addTask = createAppAsyncThunk<AddTaskReturnType, AddTaskArgType>('tasks/ad
             let task = res.data.data.item
             return {task}
         }  else {
-            handleServerAppError(res.data, dispatch)
-            return rejectWithValue(null)
+            handleServerAppError(res.data, dispatch,false);
+            return rejectWithValue(res.data.messages[0])
         }
     })
 

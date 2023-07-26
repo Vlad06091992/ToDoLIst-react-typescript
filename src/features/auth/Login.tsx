@@ -38,7 +38,6 @@ export const Login = () => {
                     let fieldsErrors = reason.fieldsErrors
                     if (fieldsErrors) {
                         fieldsErrors.forEach((el) =>{
-                            debugger
                             formikHelpers.setFieldError(el.field, el.error)})
                     }
 
