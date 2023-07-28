@@ -9,9 +9,6 @@ type AddItemFormPropsType = {
 }
 
 
-
-
-
 export const AddItemForm = React.memo(function ({addItem, disabled = false}: AddItemFormPropsType) {
 
     let [title, setTitle] = useState('')
@@ -21,8 +18,8 @@ export const AddItemForm = React.memo(function ({addItem, disabled = false}: Add
         if (title.trim() !== '') {
             addItem(title)
                 .then(() => {
-                setTitle('');
-            }).catch((e: any) => {
+                    setTitle('');
+                }).catch((e: any) => {
                 setError(e.data.messages[0])
             });
         } else {

@@ -35,53 +35,60 @@ const slice = createSlice({
 })
 
 
-
-
-const login = createAppAsyncThunk<AuthThunksReturnType,LoginParamsType>('auth/login',async (arg, {dispatch, rejectWithValue})=>{
+const login = createAppAsyncThunk<AuthThunksReturnType, LoginParamsType>('auth/login', async (arg, {
+    dispatch,
+    rejectWithValue
+}) => {
     const res = await authAPI.login(arg);
-        if (res.data.resultCode === 0) {
-            dispatch(setAppStatus({status: 'succeeded'}));
-            return {isLoggedIn: true};
-        } else {
-            const showError = !res.data.fieldsErrors?.length;
-            return rejectWithValue({data:res.data, showGlobalError:showError});
-        }
+    if (res.data.resultCode === 0) {
+        dispatch(setAppStatus({status: 'succeeded'}));
+        return {isLoggedIn: true};
+    } else {
+        const showError = !res.data.fieldsErrors?.length;
+        return rejectWithValue({data: res.data, showGlobalError: showError});
+    }
 
 })
 
 
-const logout = createAsyncThunk<AuthThunksReturnType, void>('auth/logout', async (arg, {dispatch, rejectWithValue}:BaseThunkAPI<any, any,any,any>) => {
+const logout = createAsyncThunk<AuthThunksReturnType, void>('auth/logout', async (arg, {
+    dispatch,
+    rejectWithValue
+}: BaseThunkAPI<any, any, any, any>) => {
     const res = await authAPI.logout()
-        if (res.data.resultCode === 0) {
-            dispatch(clearTasksAndTodolists())
-            dispatch(setAppStatus({status: 'succeeded'}))
-            return {isLoggedIn: false}
-        } else {
-            return rejectWithValue({data:res.data, showGlobalError:true});
-        }
+    if (res.data.resultCode === 0) {
+        dispatch(clearTasksAndTodolists())
+        dispatch(setAppStatus({status: 'succeeded'}))
+        return {isLoggedIn: false}
+    } else {
+        return rejectWithValue({data: res.data, showGlobalError: true});
+    }
 
 
 })
 
 
- const initializeAppTC = createAppAsyncThunk<AuthThunksReturnType,void>('app/initialize', async (arg, {dispatch, rejectWithValue}) => {
+const initializeAppTC = createAppAsyncThunk<AuthThunksReturnType, void>('app/initialize', async (arg, {
+    dispatch,
+    rejectWithValue
+}) => {
     try {
         let res = await authAPI.me()
         if (res.data.resultCode === 0) {
             return {isLoggedIn: true}
         } else {
-            return rejectWithValue({data:res.data, showGlobalError:false});
+            return rejectWithValue({data: res.data, showGlobalError: false});
         }
-    }  finally {
+    } finally {
         dispatch(setAppInitialized({isInitialized: true}))
     }
 })
 
 // types
 
-type AuthThunksReturnType = {isLoggedIn:boolean}
+type AuthThunksReturnType = { isLoggedIn: boolean }
 
-export const authThunks = {login, logout,initializeAppTC}
+export const authThunks = {login, logout, initializeAppTC}
 export const authReducer = slice.reducer
 
 
