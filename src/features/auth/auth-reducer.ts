@@ -37,52 +37,42 @@ const slice = createSlice({
 
 
 
-const login = createAppAsyncThunk<AuthThunksReturnType,LoginParamsType>('auth/login',(arg, thunkAPI)=>{
-    return thunkTryCatch(thunkAPI, async () => {
-        const {dispatch, rejectWithValue} = thunkAPI;
-        const res = await authAPI.login(arg);
+const login = createAppAsyncThunk<AuthThunksReturnType,LoginParamsType>('auth/login',async (arg, {dispatch, rejectWithValue})=>{
+    const res = await authAPI.login(arg);
         if (res.data.resultCode === 0) {
             dispatch(setAppStatus({status: 'succeeded'}));
             return {isLoggedIn: true};
         } else {
             const showError = !res.data.fieldsErrors?.length;
-            handleServerAppError(res.data, dispatch, showError);
-            return rejectWithValue(res.data);
+            return rejectWithValue({data:res.data, showGlobalError:showError});
         }
-    });
+
 })
 
 
-const logout = createAsyncThunk<AuthThunksReturnType, void>('auth/logout', async (arg, thunkAPI:BaseThunkAPI<any, any,any,any>) => {
-    return thunkTryCatch(thunkAPI,async ()=>{
-        const{dispatch,rejectWithValue} = thunkAPI
-        const res = await authAPI.logout()
+const logout = createAsyncThunk<AuthThunksReturnType, void>('auth/logout', async (arg, {dispatch, rejectWithValue}:BaseThunkAPI<any, any,any,any>) => {
+    const res = await authAPI.logout()
         if (res.data.resultCode === 0) {
             dispatch(clearTasksAndTodolists())
             dispatch(setAppStatus({status: 'succeeded'}))
             return {isLoggedIn: false}
         } else {
-            handleServerAppError(res.data, dispatch)
-            return rejectWithValue(null)
+            return rejectWithValue({data:res.data, showGlobalError:true});
         }
-    })
+
 
 })
 
 
- const initializeAppTC = createAppAsyncThunk<AuthThunksReturnType,void>('app/initialize', async (arg, thunkAPI) => {
-    const {dispatch, rejectWithValue} = thunkAPI
+ const initializeAppTC = createAppAsyncThunk<AuthThunksReturnType,void>('app/initialize', async (arg, {dispatch, rejectWithValue}) => {
     try {
         let res = await authAPI.me()
         if (res.data.resultCode === 0) {
             return {isLoggedIn: true}
         } else {
-            return rejectWithValue(null)
+            return rejectWithValue({data:res.data, showGlobalError:false});
         }
-    } catch (e) {
-        handleServerNetworkError(e, dispatch)
-        return rejectWithValue(null)
-    } finally {
+    }  finally {
         dispatch(setAppInitialized({isInitialized: true}))
     }
 })

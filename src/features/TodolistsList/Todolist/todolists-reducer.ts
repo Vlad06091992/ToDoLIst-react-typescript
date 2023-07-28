@@ -67,7 +67,7 @@ export const removeTodolist = createAppAsyncThunk<RemoveTodolistType, RemoveTodo
         if (res.data.resultCode === ResultCode.success) {
             return {todolistId}
         } else {
-            return rejectWithValue({data:res.data, showGlobalError:false});
+            return rejectWithValue({data:res.data, showGlobalError:true});
         }
 })
 
@@ -80,24 +80,19 @@ const addTodolist = createAppAsyncThunk<AddTodolistReturnType, AddTodolistArgTyp
     if (res.data.resultCode === ResultCode.success) {
         return {todolist: res.data.data.item};
     } else {
-        debugger
         return rejectWithValue({data:res.data, showGlobalError:false});
     }
 })
 
 
-const changeTodolistTitle = createAppAsyncThunk<ChangeTodolistTitleType, ChangeTodolistTitleType>('todolists/changeTodolists', async (arg, thunkAPI) => {
+const changeTodolistTitle = createAppAsyncThunk<ChangeTodolistTitleType, ChangeTodolistTitleType>('todolists/changeTodolists', async (arg, {dispatch, rejectWithValue}) => {
     const {id, title} = arg
-    const {dispatch, rejectWithValue} = thunkAPI
-    return thunkTryCatch(thunkAPI, async () => {
-        let res = await todolistsApi.updateTodolist(arg.id, arg.title)
+    let res = await todolistsApi.updateTodolist(arg.id, arg.title)
         if (res.data.resultCode === ResultCode.success) {
             return {id, title}
         } else {
-            handleServerAppError(res.data, dispatch);
-            return rejectWithValue(null);
+            return rejectWithValue({data:res.data, showGlobalError:true});
         }
-    })
 })
 
 

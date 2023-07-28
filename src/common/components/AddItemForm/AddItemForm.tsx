@@ -23,7 +23,6 @@ export const AddItemForm = React.memo(function ({addItem, disabled = false}: Add
                 .then(() => {
                 setTitle('');
             }).catch((e: any) => {
-                debugger
                 setError(e.data.messages[0])
             });
         } else {
