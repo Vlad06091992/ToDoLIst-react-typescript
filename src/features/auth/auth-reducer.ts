@@ -6,12 +6,12 @@ import { setAppInitialized, setAppStatus } from "app/app-reducer";
 import { thunkTryCatch } from "common/utils/thunkTryCatch";
 import { BaseThunkAPI } from "@reduxjs/toolkit/dist/createAsyncThunk";
 
-const initialState: InitialStateType = {
+export const initialState: InitialStateType = {
   isLoggedIn: false,
   captchaUrl: null,
 };
 
-type InitialStateType = {
+export type InitialStateType = {
   isLoggedIn: boolean;
   captchaUrl: null | string;
 };
@@ -84,7 +84,7 @@ const initializeApp = createAppAsyncThunk<AuthThunksReturnType, void>(
   }
 );
 
-export const getCaptchaUrl = createAppAsyncThunk<any, void>(
+export const getCaptchaUrl = createAppAsyncThunk<GetCaptchaReturnType, void>(
   "auth/getCaptcha",
   async (arg, { dispatch, rejectWithValue }) => {
     let res = await securityApi.getCaptchaUrl();
@@ -95,6 +95,7 @@ export const getCaptchaUrl = createAppAsyncThunk<any, void>(
 // types
 
 type AuthThunksReturnType = { isLoggedIn: boolean };
+type GetCaptchaReturnType = { captcha: string };
 
-export const authThunks = { login, logout, initializeAppTC: initializeApp };
+export const authThunks = { login, logout, initializeAppTC: initializeApp, getCaptchaUrl };
 export const authReducer = slice.reducer;
