@@ -20,6 +20,8 @@ import { selectIsInitialized, selectStatus } from "app/app-selectors";
 import { ErrorSnackbar } from "common/components";
 import { useActions } from "hooks/useActions";
 import { authThunks } from "features/auth/auth-reducer";
+import { Header } from "app/Header";
+import { Routing } from "app/Routing";
 
 type PropsType = {
   demo?: boolean;
@@ -49,26 +51,8 @@ function App({ demo = false }: PropsType) {
   return (
     <div>
       <ErrorSnackbar />
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="menu">
-            <Menu />
-          </IconButton>
-          <Typography variant="h6">News</Typography>
-          {isLoggedIn && (
-            <Button color="inherit" onClick={logoutHandler}>
-              Log out
-            </Button>
-          )}
-        </Toolbar>
-        {status === "loading" && <LinearProgress />}
-      </AppBar>
-      <Container fixed>
-        <Routes>
-          <Route path={"/"} element={<TodolistsList demo={demo} />} />
-          <Route path={"/login"} element={<Login />} />
-        </Routes>
-      </Container>
+      <Header />
+      <Routing demo={demo} />
     </div>
   );
 }
