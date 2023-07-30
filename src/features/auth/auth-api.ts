@@ -1,22 +1,27 @@
-import {instance} from "common/api";
-import {ResponseType} from "common/types";
+import { instance } from "common/api";
+import { ResponseType } from "common/types";
 
 export const authAPI = {
-    login(data: LoginParamsType) {
-        return instance.post<ResponseType<{ userId?: number }>>('auth/login', data);
-    },
-    logout() {
-        return instance.delete<ResponseType<{ userId?: number }>>('auth/login');
-    },
-    me() {
-        return  instance.get<ResponseType<{id: number; email: string; login: string}>>('auth/me');
-    }
-}
+  login(data: LoginParamsType) {
+    return instance.post<ResponseType<{ userId?: number }>>("auth/login", data);
+  },
+  logout() {
+    return instance.delete<ResponseType<{ userId?: number }>>("auth/login");
+  },
+  me() {
+    return instance.get<ResponseType<{ id: number; email: string; login: string }>>("auth/me");
+  },
+};
+
+export const securityApi = {
+  getCaptchaUrl() {
+    return instance.get(`security/get-captcha-url`);
+  },
+};
 
 export type LoginParamsType = {
-    email: string
-    password: string
-    rememberMe: boolean
-    captcha?: string
-}
-
+  email: string;
+  password: string;
+  rememberMe: boolean;
+  captcha: string;
+};
